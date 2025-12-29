@@ -14,6 +14,7 @@
               primary: '#BF933B',
               'secondary-blue': '#042178',
               'success-green': '#286634',
+              'red-soe': '#D52A1E',
             },
             animation: {
               'progress-indeterminate': 'progress-indeterminate 2s infinite linear',
@@ -29,21 +30,25 @@
       }
     </script>
     <style type="text/css">
+      body { background-color: #f9fafb; color: #1f2937; }
       .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
       .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
       .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
       .no-scrollbar::-webkit-scrollbar { display: none; }
+      
+      /* Animations */
       .animate-in { animation-duration: 0.5s; animation-fill-mode: both; }
       .fade-in { animation-name: fadeIn; }
+      .zoom-in { animation-name: zoomIn; }
       .slide-in-from-top-6 { animation-name: slideInTop; }
       .slide-in-from-right-12 { animation-name: slideInRight; }
       .slide-in-from-bottom-12 { animation-name: slideInBottom; }
-      .zoom-in { animation-name: zoomIn; }
+      
       @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
       @keyframes slideInTop { from { transform: translateY(-1.5rem); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
       @keyframes slideInRight { from { transform: translateX(3rem); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
       @keyframes slideInBottom { from { transform: translateY(3rem); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-      @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 <script type="importmap">
 {
