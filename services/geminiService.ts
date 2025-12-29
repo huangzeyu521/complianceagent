@@ -2,9 +2,11 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { DiagnosisResult, RiskLevel, ExtractedEntity, ComplianceRule } from "../types";
 import { MOCK_RULES } from "../constants";
+// 直接把你的 Key 粘贴在这里
+const genAI = new GoogleGenerativeAI("AIzaSyBx9yuY-D0QvvJiatH2T-DLXYOCFJfEeY0");
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
+/**const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+ */
 /**
  * Intelligent Extraction Engine
  * Uses Gemini 3 Pro for complex document reasoning.

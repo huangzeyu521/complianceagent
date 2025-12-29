@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SOE Compliance Agent</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#BF933B',
+              'secondary-blue': '#042178',
+              'success-green': '#286634',
+            },
+            animation: {
+              'progress-indeterminate': 'progress-indeterminate 2s infinite linear',
+            },
+            keyframes: {
+              'progress-indeterminate': {
+                '0%': { transform: 'translateX(-100%)' },
+                '100%': { transform: 'translateX(100%)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style type="text/css">
+      .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .animate-in { animation-duration: 0.5s; animation-fill-mode: both; }
+      .fade-in { animation-name: fadeIn; }
+      .slide-in-from-top-6 { animation-name: slideInTop; }
+      .slide-in-from-right-12 { animation-name: slideInRight; }
+      .slide-in-from-bottom-12 { animation-name: slideInBottom; }
+      .zoom-in { animation-name: zoomIn; }
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes slideInTop { from { transform: translateY(-1.5rem); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+      @keyframes slideInRight { from { transform: translateX(3rem); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+      @keyframes slideInBottom { from { transform: translateY(3rem); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+      @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    </style>
 <script type="importmap">
 {
   "imports": {
@@ -22,9 +62,8 @@
 }
 </script>
 </head>
-<body>
+<body class="bg-gray-50">
     <div id="root"></div>
-    <!-- 指向你的入口文件 -->
     <script type="module" src="/index.tsx"></script>
 </body>
 </html>
