@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, RadarChart, PolarGrid, PolarAngleAxis, Radar } from 'recharts';
-import { AlertTriangle, Clock, TrendingUp, Target, Database, Info, ShieldCheck, ArrowRight, MapPin } from 'lucide-react';
+import { ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, RadarChart, PolarGrid, PolarAngleAxis, Radar, ChevronRight } from 'recharts';
+import { AlertTriangle, Clock, TrendingUp, Target, Database, Info, ShieldCheck, ArrowRight, MapPin, ChevronRight as LucideChevronRight } from 'lucide-react';
 import { COLORS } from '../constants';
 
 const Dashboard: React.FC = () => {
@@ -89,7 +89,7 @@ const Dashboard: React.FC = () => {
         {/* Risk Distribution */}
         <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 lg:col-span-2">
           <div className="flex items-center justify-between mb-8">
-            <h3 className="font-black text-gray-800 text-lg">东兴区重点任务整改进度</h3>
+            <h3 className="font-black text-gray-800 text-lg">重点任务整改进度</h3>
             <button className="text-xs text-primary font-black hover:underline flex items-center">
               查看全部档案 <ArrowRight size={14} className="ml-1" />
             </button>
@@ -101,14 +101,14 @@ const Dashboard: React.FC = () => {
                   <div className={`w-2.5 h-2.5 rounded-full mr-5 ${action.level === 'HIGH' ? 'bg-red-500' : action.level === 'MEDIUM' ? 'bg-amber-500' : 'bg-blue-500'}`} />
                   <div>
                     <div className="text-base font-black text-gray-800 group-hover:text-primary transition-colors">{action.title}</div>
-                    <div className="text-[10px] text-gray-400 mt-1 font-bold uppercase tracking-widest">{action.dept} · 风险评估: {action.level}</div>
+                    <div className="text-[10px] text-gray-400 mt-1 font-bold uppercase tracking-widest">{action.dept} · {action.level}</div>
                   </div>
                 </div>
                 <div className="flex items-center">
                   <span className={`text-[10px] px-3 py-1 rounded-lg font-black uppercase ${action.status === '已完成' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
                     {action.status}
                   </span>
-                  <ChevronRight size={18} className="text-gray-200 ml-5 group-hover:text-primary transition-colors" />
+                  <LucideChevronRight size={18} className="text-gray-200 ml-5 group-hover:text-primary transition-colors" />
                 </div>
               </div>
             ))}
@@ -121,14 +121,11 @@ const Dashboard: React.FC = () => {
           <div className="bg-blue-400/20 px-3 py-1 rounded-lg text-[10px] font-black inline-block mb-4 border border-blue-400/30 uppercase tracking-widest">Local Insight · Neijiang</div>
           <h3 className="text-2xl font-black mb-3">栎东公司·东兴区专属合规洞察</h3>
           <p className="text-blue-100 text-base leading-relaxed mb-8 opacity-90 font-medium">
-            监测到内江市暂未发布独立合规办法。建议公司在参照省属办法的基础上，由母公司 <span className="text-primary font-black">四川东同建设集团</span> 牵头，针对位于圣美路11号的储能资产制定差异化的“资产负债透明度”实施细则。
+            监测到内江市暂未发布独立合规办法。建议公司在参照省属办法的基础上，由母公司 <span className="text-primary font-black">四川东同建设集团</span> 牵头，针对位于圣美路11号的储能资产制定差异化的实施细则。
           </p>
           <div className="flex space-x-4">
             <button className="bg-primary text-white px-8 py-3 rounded-2xl text-sm font-black shadow-xl hover:shadow-2xl transition-all active:scale-95">
               编制内规建议书
-            </button>
-            <button className="bg-blue-900/50 border border-blue-700 text-white px-8 py-3 rounded-2xl text-sm font-bold hover:bg-blue-800 transition-all">
-              配置自动预警系统
             </button>
           </div>
         </div>
@@ -136,11 +133,6 @@ const Dashboard: React.FC = () => {
       </div>
     </div>
   );
-};
-
-const ChevronRight = ({ size, className }: { size: number, className?: string }) => {
-    const { ChevronRight: LucideIcon } = (window as any).LucideReact || { ChevronRight: () => null };
-    return <LucideIcon size={size} className={className} />;
 };
 
 export default Dashboard;

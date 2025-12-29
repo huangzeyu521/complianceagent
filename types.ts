@@ -14,7 +14,7 @@ export interface ComplianceRule {
 }
 
 export interface ExtractedEntity {
-  type: 'ORG' | 'DATE' | 'MONEY' | 'CLAUSE' | 'METRIC';
+  type: 'ORG' | 'DATE' | 'MONEY' | 'CLAUSE' | 'METRIC' | 'DECISION' | 'RISK';
   value: string;
   context: string;
   confidence: number;

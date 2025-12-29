@@ -15,7 +15,7 @@ export const extractEntitiesFromDocument = async (
   const parts: any[] = [];
   
   if (typeof input === 'string') {
-    parts.push({ text: `分析以下文档文本内容并提取合规关键要素：\n${input.substring(0, 30000)}` });
+    parts.push({ text: `分析以下文档文本内容并提取合规关键要素：\n${input.substring(0, 35000)}` });
   } else {
     parts.push({
       inlineData: {
@@ -23,44 +23,43 @@ export const extractEntitiesFromDocument = async (
         mimeType: input.mimeType
       }
     });
-    parts.push({ text: "请作为专业的国企合规审查专家，研读此文件，提取与经营管理合规相关的关键实体、核心条款和风险数据点。" });
+    parts.push({ text: "请作为专业的国企合规审查专家，深度研读此文件，提取与经营管理合规相关的关键实体、核心条款、风险数据点，特别是涉及“三重一大”决策和国有资产安全的内容。" });
   }
 
   const response = await ai.models.generateContent({
-    model: 'gemini-3-pro-preview', // Upgraded for high-quality extraction
+    model: 'gemini-3-pro-preview',
     contents: {
       parts: [
         ...parts,
         {
           text: `
-            【提取任务】
+            【深度提取任务】
             请从文档中精准识别并分类以下合规要素：
-            1. ORG (组织机构): 涉及的子公司、上级集团（如东同集团）、外部供应商、监管机构、控股关联方等。
-            2. DATE (时间节点): 合同签署/到期日、项目起止时间、审计报告期、重大决策会议日期。
-            3. MONEY (财务金额): 主营收入金额、单笔投资额、研发经费投入、资产重组估值、分包合同金额等。
-            4. CLAUSE (核心条款): 法律红线条款、一票否决权、分包限制、违约惩罚机制、廉洁协议条款、保密义务。
-            5. METRIC (监管指标): 研发投入强度(%)、资产负债率(%)、国有资产保值增值率、能源消耗定额指标。
+            1. ORG (组织机构): 涉及的子公司、关联方、供应商、监管机构。
+            2. DATE (时间节点): 合同签署/到期、审计期、会议日期。
+            3. MONEY (财务金额): 交易金额、投资额、研发强度、评估价值。
+            4. CLAUSE (核心条款): 法律红线、违约责任、一票否决权、排他性条款。
+            5. METRIC (监管指标): 资产负债率、研发投入占比、能源消耗指标。
+            6. DECISION (决策层级): 识别事项是否经过党委会、董事会或经理办公会，是否符合“三重一大”流程。
+            7. RISK (潜在风险点): 文档中暗示的程序瑕疵、越权审批、利益冲突或国有资产流失隐患。
 
             【输出要求】
             1. 以 JSON 数组格式返回。
-            2. 必须包含字段: 
-               - type: 指定的类别名。
-               - value: 提取的具体值或短句。
-               - context: 包含该要素的原文上下文片段（用于审计回溯）。
-               - confidence: 提取的可信度分数 (0.0 到 1.0)。
-            3. 确保提取的内容对国企经营管理具有合规性判断价值。
+            2. 字段要求: type (大写枚举), value (具体事实), context (原文线索), confidence (0.0-1.0)。
+            3. 重点挖掘文档中隐含的合规冲突。
           `
         }
       ]
     },
     config: {
       responseMimeType: "application/json",
+      thinkingConfig: { thinkingBudget: 2000 },
       responseSchema: {
         type: Type.ARRAY,
         items: {
           type: Type.OBJECT,
           properties: {
-            type: { type: Type.STRING, enum: ['ORG', 'DATE', 'MONEY', 'CLAUSE', 'METRIC'] },
+            type: { type: Type.STRING, enum: ['ORG', 'DATE', 'MONEY', 'CLAUSE', 'METRIC', 'DECISION', 'RISK'] },
             value: { type: Type.STRING },
             context: { type: Type.STRING },
             confidence: { type: Type.NUMBER }
@@ -92,27 +91,22 @@ export const performComplianceDiagnosis = async (
   const response = await ai.models.generateContent({
     model: 'gemini-3-pro-preview',
     contents: `
-      你是一名服务于中国央国企（如四川东同集团、四川栎东公司）的合规风险管理专家及法律顾问。
-      请根据提供的合规标准和提取的事实证据，进行深度对标诊断。
+      你是一名服务于中国央国企的合规风险管理专家。请根据合规标准和提取的事实证据进行深度对标。
       
-      【权威对标标准库】：
+      【对标标准库】：
       ${rulesContext}
       
-      【审计事实/提取数据】：
+      【审计事实】：
       ${entitiesContext}
       
-      【用户补充提报信息】：
-      ${userInput}
-      
-      【诊断工作要求】：
-      1. 关联规则：每一项诊断结果必须明确指向标准库中的具体规则 ID。
-      2. 差距量化：如果涉及比例或金额，必须根据事实计算出与合规标准的具体偏差。
-      3. 风险评估：划分为 HIGH（严重违规，影响国有资产安全或法律责任）、MEDIUM（程序不规范）、LOW（优化建议）。
-      4. 穿透建议：建议必须具体、可执行，包含具体的规章制度完善路径、合同条款修订建议或内控流程嵌入点。
+      【诊断要求】：
+      1. 必须穿透分析：挖掘表面数据背后的程序违规。
+      2. 风险定级：HIGH (严重违规), MEDIUM (瑕疵), LOW (建议)。
+      3. 必须给出具体整改路线图。
     `,
     config: {
       responseMimeType: "application/json",
-      thinkingConfig: { thinkingBudget: 4000 }, // Increased budget for complex legal reasoning
+      thinkingConfig: { thinkingBudget: 4000 },
       responseSchema: {
         type: Type.OBJECT,
         properties: {
@@ -161,10 +155,7 @@ export const interpretComplianceDocument = async (text: string): Promise<Complia
   const response = await ai.models.generateContent({
     model: 'gemini-3-pro-preview',
     contents: `
-      请深度解读以下国资监管文件或企业内控办法，并将其结构化为规则条目。
-      分类范畴：'风险控制', '财务管理', '投资决策', '安全生产', '科技创新'。
-      
-      解析内容：
+      解读以下文件并结构化为规则条目。分类：'风险控制', '财务管理', '投资决策', '安全生产', '科技创新'。
       ${text.substring(0, 20000)}
     `,
     config: {
