@@ -4,11 +4,15 @@ import { DiagnosisResult, RiskLevel, ExtractedEntity, ComplianceRule } from "../
 import { MOCK_RULES } from "../constants";
 
 /**
- * 辅助函数：在调用时获取 AI 实例
- * 遵循指令：在发起 API 调用前创建实例，确保获取到最新的 process.env.API_KEY
+ * 内部辅助函数：获取 AI 实例
+ * 仅在实际调用 API 时初始化，避免顶层初始化失败导致白屏
  */
-const getAI = () => {
-  return new GoogleGenAI({ apiKey: process.env.API_KEY });
+const getAIInstance = () => {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) {
+    throw new Error("检测到 API Key 尚未配置。请联系系统管理员在云端控制台配置环境变量：API_KEY");
+  }
+  return new GoogleGenAI({ apiKey });
 };
 
 /**
@@ -18,7 +22,7 @@ const getAI = () => {
 export const extractEntitiesFromDocument = async (
   input: string | { data: string; mimeType: string }
 ): Promise<ExtractedEntity[]> => {
-  const ai = getAI();
+  const ai = getAIInstance();
   const parts: any[] = [];
   
   if (typeof input === 'string') {
@@ -92,7 +96,7 @@ export const performComplianceDiagnosis = async (
   riskHeatmap: { category: string, value: number }[],
   results: DiagnosisResult[] 
 }> => {
-  const ai = getAI();
+  const ai = getAIInstance();
   const rulesContext = MOCK_RULES.map(r => `[${r.id}] ${r.title}: ${r.content}`).join("\n");
   const entitiesContext = confirmedEntities ? `【确认的审计事实证据】：\n${JSON.stringify(confirmedEntities)}` : "";
 
@@ -160,7 +164,7 @@ export const performComplianceDiagnosis = async (
  * Intelligent Regulation Interpreter
  */
 export const interpretComplianceDocument = async (text: string): Promise<ComplianceRule> => {
-  const ai = getAI();
+  const ai = getAIInstance();
   const response = await ai.models.generateContent({
     model: 'gemini-3-pro-preview',
     contents: `
