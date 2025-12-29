@@ -3,16 +3,13 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { DiagnosisResult, RiskLevel, ExtractedEntity, ComplianceRule } from "../types";
 import { MOCK_RULES } from "../constants";
 
-
-// 直接把你的 Key 放在字符串里，确保没有空格
-const API_KEY = "AIzaSyBx9yuY-D0QvvJiatH2T-DLXYOCFJfEeY0"; 
-
-// 增加一层防护，防止空值导致崩溃
-if (!API_KEY) {
-    console.error("API Key 缺失！");
-}
-
-export const genAI = new GoogleGenerativeAI(API_KEY);
+/**
+ * 严格遵循指令：
+ * 1. 使用 process.env.API_KEY 初始化。
+ * 2. 必须使用 new GoogleGenAI({ apiKey: ... }) 格式。
+ * 3. 变量名统一为 ai。
+ */
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 /**
  * Intelligent Extraction Engine
