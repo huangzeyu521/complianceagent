@@ -23,7 +23,7 @@ export const extractEntitiesFromDocument = async (
         mimeType: input.mimeType
       }
     });
-    parts.push({ text: "请作为国企高级合规官及法律审计专家，深度研读此文档。你需要识别出所有潜在的合规风险点、关键经营实体、财务数据、时间红线及核心合同条款。" });
+    parts.push({ text: "请作为国企高级合规官及法律审计专家，深度研读此文档。你需要识别出所有潜在的合规风险点、关键经营实体、财务数据、时间红线及核心合同条款。特别注意“三重一大”决策事项。" });
   }
 
   const response = await ai.models.generateContent({
@@ -36,28 +36,30 @@ export const extractEntitiesFromDocument = async (
             【提取指令】
             请从提供的资料中精准提取并分类以下合规证据实体：
 
-            1. ORG (组织与主体): 提取涉及的法人主体、子公司、分包商、关联方。特别注意提及的“四川东同建设集团”或“四川栎东公司”及其上下级关系。
-            2. DATE (时间线): 关键的时间节点，如合同起止、项目周期、审计期限、决策会议日期。
-            3. MONEY (财务数据): 涉及的具体金额、投资强度、研发投入、资产估值。标注其单位。
-            4. CLAUSE (合规红线): 法律层面的约束性条款，如“禁止性规定”、“违约责任”、“董事会决策权限”、“一票否决权”等。
-            5. METRIC (经营指标): 具体的KPI或监管指标，如“资产负债率”、“研发强度占比”、“能耗达标率”。
+            1. ORG (组织与主体): 提取涉及的法人主体、子公司、分包商、关联方。
+            2. DATE (时间线): 关键的时间节点，如合同起止、项目周期、审计期限。
+            3. MONEY (财务数据): 涉及的具体金额、投资强度、研发投入、资产估值。
+            4. CLAUSE (合规红线): 法律层面的约束性条款，如“违约责任”、“一票否决权”等。
+            5. METRIC (经营指标): 具体的KPI或监管指标，如“资产负债率”、“研发强度占比”。
+            6. DECISION (决策程序): 识别是否涉及“三重一大”（重大事项、重要人事、重大项目、大额资金）及其对应的决策层级（党委会、董事会等）。
+            7. RISK (潜在风险): 识别文档中可能暗示违规、程序不规范或存在国有资产流失风险的描述。
 
             【输出要求】
             - 返回格式：严格的 JSON 数组。
-            - 包含字段：type (上述类别之一), value (提取的具体信息), context (包含该信息的原文段落，用于核查回溯), confidence (0.0-1.0的可信度评估)。
-            - 深度要求：不要只做字面提取，要理解语义上的“约束”和“责任”。
+            - 包含字段：type (上述类别大写字母), value (具体信息), context (原文段落), confidence (0.0-1.0)。
           `
         }
       ]
     },
     config: {
       responseMimeType: "application/json",
+      thinkingConfig: { thinkingBudget: 2000 },
       responseSchema: {
         type: Type.ARRAY,
         items: {
           type: Type.OBJECT,
           properties: {
-            type: { type: Type.STRING, enum: ['ORG', 'DATE', 'MONEY', 'CLAUSE', 'METRIC'] },
+            type: { type: Type.STRING, enum: ['ORG', 'DATE', 'MONEY', 'CLAUSE', 'METRIC', 'DECISION', 'RISK'] },
             value: { type: Type.STRING },
             context: { type: Type.STRING },
             confidence: { type: Type.NUMBER }
@@ -104,9 +106,9 @@ export const performComplianceDiagnosis = async (
       
       【诊断工作指南】：
       1. 必须引用：每一个诊断项必须明确关联规则库中的 ID。
-      2. 穿透分析：不仅指出违规，要分析违规对“国有资产安全”和“企业信用”的潜在影响。
-      3. 风险定级：HIGH (直接违规且有法律后果), MEDIUM (程序瑕疵), LOW (管理建议)。
-      4. 落地建议：建议应具备“可操作性”，例如具体的合同条款修改、内控流程嵌入点。
+      2. 穿透分析：分析违规对“国有资产安全”和“企业信用”的潜在影响。
+      3. 风险定级：HIGH, MEDIUM, LOW。
+      4. 落地建议：建议应具备“可操作性”。
     `,
     config: {
       responseMimeType: "application/json",
