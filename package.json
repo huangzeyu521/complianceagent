@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "AI-driven compliance management system for Chinese State-Owned Enterprises",
   "main": "index.tsx",
-"scripts": {
+  "scripts": {
   "start": "npx serve -s dist -l 8080",
   "build": "vite build"
 },
