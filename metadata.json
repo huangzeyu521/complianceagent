@@ -1,0 +1,7 @@
+{
+  "name": "SOE Compliance Intelligence Agent",
+  "description": "An AI-driven compliance management system for Chinese State-Owned Enterprises, providing intelligent diagnosis, risk assessment, and actionable suggestions based on SASAC regulations.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
