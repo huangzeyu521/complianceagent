@@ -5,9 +5,9 @@
   "description": "AI-driven compliance management system for Chinese State-Owned Enterprises",
   "main": "index.tsx",
   "scripts": {
-    "start": "serve -s dist -l $PORT",
-    "build": "tsc"
-  },
+  "start": "serve -s dist -l $PORT",
+  "build": "vite build"
+},
   "dependencies": {
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
