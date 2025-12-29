@@ -156,7 +156,8 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
       </div>
 
       {/* 右侧登录表单区域 */}
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyCenter: 'center', padding: '32px' }} className="lg:w-1/2">
+      {/* Fix: Changed justifyCenter to justifyContent on line 159 */}
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px' }} className="lg:w-1/2">
         <div style={{ width: '100%', maxWidth: '448px', margin: '0 auto' }}>
           {/* 移动端 Logo */}
           <div style={{ display: 'block', marginBottom: '32px', textAlign: 'center' }} className="lg:hidden">
@@ -232,12 +233,14 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                       maxLength={4}
                       style={{ flex: 1, height: '48px', padding: '0 16px', fontSize: '14px', border: '1px solid #E5E6EB', borderRadius: '12px', outline: 'none', fontWeight: 700, letterSpacing: '2px' }}
                     />
-                    <div style={{ width: '112px', height: '48px', background: 'linear-gradient(135deg, rgba(191, 147, 59, 0.1) 0%, rgba(191, 147, 59, 0.05) 100%)', border: '1px solid #E5E6EB', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyCenter: 'center', userSelect: 'none' }}>
+                    {/* Fix: Changed justifyCenter to justifyContent on line 235 */}
+                    <div style={{ width: '112px', height: '48px', background: 'linear-gradient(135deg, rgba(191, 147, 59, 0.1) 0%, rgba(191, 147, 59, 0.05) 100%)', border: '1px solid #E5E6EB', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', userSelect: 'none' }}>
                       <span style={{ fontSize: '20px', fontWeight: 900, letterSpacing: '4px', color: COLORS.PRIMARY, fontFamily: 'monospace', width: '100%', textAlign: 'center' }}>
                         {captchaCode}
                       </span>
                     </div>
-                    <button type="button" onClick={refreshCaptcha} title="刷新验证码" style={{ width: '48px', height: '48px', background: 'white', border: '1px solid #E5E6EB', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyCenter: 'center' }}>
+                    {/* Fix: Changed justifyCenter to justifyContent on line 240 */}
+                    <button type="button" onClick={refreshCaptcha} title="刷新验证码" style={{ width: '48px', height: '48px', background: 'white', border: '1px solid #E5E6EB', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <RefreshCw size={20} className="text-gray-400" />
                     </button>
                   </div>
