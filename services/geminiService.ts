@@ -7,13 +7,19 @@ import { MOCK_RULES } from "../constants";
  * 内部辅助函数：获取 AI 实例
  * 仅在实际调用 API 时初始化，避免顶层初始化失败导致白屏
  */
-const getAIInstance = () => {
-  const apiKey = process.env.API_KEY;
-  if (!apiKey) {
-    throw new Error("检测到 API Key 尚未配置。请联系系统管理员在云端控制台配置环境变量：API_KEY");
-  }
-  return new GoogleGenAI({ apiKey });
-};
+
+
+// 找到这行或类似的
+// const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY);
+
+// 修改为：
+const API_KEY = "AIzaSyBx9yuY-D0QvvJiatH2T-DLXYOCFJfEeY0"; // 直接粘贴你的有效Key
+
+if (!API_KEY) {
+  throw new Error("检测到 API Key 尚未配置。");
+}
+
+export const genAI = new GoogleGenerativeAI(API_KEY);
 
 /**
  * Intelligent Extraction Engine
