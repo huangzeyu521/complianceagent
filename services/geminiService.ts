@@ -1,4 +1,5 @@
 
+
 import { GoogleGenAI, Type } from "@google/genai";
 import { DiagnosisResult, RiskLevel, ExtractedEntity, ComplianceRule } from "../types";
 import { MOCK_RULES } from "../constants";
