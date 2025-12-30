@@ -12,6 +12,7 @@ import { MOCK_RULES } from "../constants";
 // 找到这行或类似的
 // const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY);
 
+
 // 修改为：
 const API_KEY = "AIzaSyBx9yuY-D0QvvJiatH2T-DLXYOCFJfEeY0"; // 直接粘贴你的有效Key
 
